@@ -1,16 +1,29 @@
-<!--https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Redirigiendo...</title>
+  <title>Redirigiendo a reseña...</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      margin: 0;
+      color: #333;
+      text-align: center;
+    }
+  </style>
   <script>
+    // Diccionario de negocios y sus enlaces de reseña directa
     const destinos = {
-      "tintoreria": "https://www.google.com/maps/place/POLLOS+al+carb%C3%B3n+La+Vaca+Y+El+Pollito+Grill/@19.6387636,-99.2208207,17z/data=!4m14!1m7!3m6!1s0x85d21e69834e3757:0xe7e398de372c13de!2sTintoreria+Hollywood+I!8m2!3d19.6387636!4d-99.2182458!16s%2Fg%2F11c3tq40hh!3m5!1s0x85d21e669318d989:0x25d75614e1cea546!8m2!3d19.6362885!4d-99.2267933!16s%2Fg%2F11bzzv7wlc?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D",
-      "cafe_roma": "https://maps.app.goo.gl/qQBfYPTUq5L1bzHe6",
+      "tintoreria": "https://www.google.com/maps/place/Tintoreria+Hollywood+I/@19.6387489,-99.2179942,21z/",
       "barberia_norte": "https://search.google.com/local/writereview?placeid=ChIJVzdOg2ke0oUR3hMsN96Y4-c"
     };
 
@@ -18,13 +31,15 @@
     const id = params.get("id");
 
     if (id && destinos[id]) {
-      window.location.replace(destinos[id]);
+      window.location.href = destinos[id];
     } else {
-      document.body.innerHTML = "<h3>Negocio no encontrado</h3>";
+      window.onload = function() {
+        document.body.innerHTML = "<h3 style='color:#d93025;'>Negocio no encontrado o ID no especificado.</h3>";
+      };
     }
   </script>
 </head>
 <body>
+  <p>Abriendo formulario de reseña...</p>
 </body>
 </html>
-
