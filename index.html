@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirigiendo...</title>
+  <script>
+    const destinos = {
+      "tintoreria": "https://www.google.com/maps/place/Tintoreria+Hollywood+I/@19.6387636,-99.2208207,17z/data=!3m1!4b1!4m6!3m5!1s0x85d21e69834e3757:0xe7e398de372c13de!8m2!3d19.6387636!4d-99.2182458!16s%2Fg%2F11c3tq40hh?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D",
+      "cafe_roma": "https://maps.app.goo.gl/ejemplo",
+      "barberia_norte": "https://g.page/r/ejemplo"
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (id && destinos[id]) {
+      window.location.replace(destinos[id]);
+    } else {
+      document.body.innerHTML = "<h3>Negocio no encontrado</h3>";
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>
