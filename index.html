@@ -1,45 +1,266 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Redirigiendo a reseña...</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Transferencia Rápida | Datos Bancarios</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
   <style>
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 80vh;
-      margin: 0;
-      color: #333;
-      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .font-mono-code {
+      font-family: "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: 0.05em;
+    }
+    .apple-glass {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .subtle-grid {
+      background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
+      background-size: 24px 24px;
     }
   </style>
+</head>
+<body class="bg-[#F8F9FB] text-neutral-900 min-h-screen flex flex-col justify-between p-4 sm:p-6 subtle-grid select-none">
+
+  <!-- Toast Notification -->
+  <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-neutral-900/90 text-white text-xs sm:text-sm font-medium shadow-2xl backdrop-blur-md opacity-0 pointer-events-none -translate-y-3 transition-all duration-300 ease-out" id="toast">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+    </svg>
+    <span>CLABE copiada al portapapeles</span>
+  </div>
+
+  <!-- Header -->
+  <header class="w-full max-w-sm mx-auto pt-4 pb-2 flex items-center justify-between text-neutral-400">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-full bg-neutral-900 flex items-center justify-center text-white shadow-sm">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" x2="21" y1="6" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+      <span class="text-xs font-semibold tracking-wider uppercase text-neutral-500">NFC Pay Direct</span>
+    </div>
+    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100/80 text-emerald-600 text-[11px] font-medium">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span>Conectado NFC</span>
+    </div>
+  </header>
+
+  <!-- Main Card -->
+  <main class="w-full max-w-sm mx-auto my-auto py-4">
+    <div class="apple-glass rounded-3xl p-6 sm:p-7 relative overflow-hidden transition-all duration-200">
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-blue-100/50 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-violet-100/40 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10">
+        <!-- Bank header -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-neutral-900 flex items-center justify-center text-white font-bold text-base shadow-sm transition-colors duration-200" id="bank-icon-container">
+              <span id="bank-initial">B</span>
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-wider font-semibold text-neutral-400">Institución</p>
+              <h2 class="text-base font-bold text-neutral-900 leading-tight" id="bank-name">Banco</h2>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M5.5 8.5a6.5 6.5 0 0 1 0 7"></path>
+              <path d="M8.5 6.5a10.5 10.5 0 0 1 0 11"></path>
+              <path d="M11.5 4.5a14.5 14.5 0 0 1 0 15"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Titular -->
+        <div class="mb-6 pb-5 border-b border-neutral-100">
+          <p class="text-[11px] uppercase tracking-wider font-semibold text-neutral-400 mb-1">Titular de la cuenta</p>
+          <h1 class="text-xl font-bold text-neutral-900 tracking-tight" id="holder-name">Nombre</h1>
+          <span class="inline-flex items-center gap-1 mt-1 text-[11px] text-neutral-500 font-medium">
+            <svg class="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+              <path clip-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" fill-rule="evenodd"></path>
+            </svg>
+            Cuenta lista para SPEI
+          </span>
+        </div>
+
+        <!-- CLABE -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-neutral-400">Cuenta CLABE (18 dígitos)</span>
+            <span class="text-[10px] text-neutral-400 font-medium">Interbancaria</span>
+          </div>
+          <div class="bg-neutral-50/80 rounded-2xl p-4 border border-neutral-200/70 hover:border-neutral-300 transition-colors">
+            <div class="font-mono-code text-[17px] sm:text-[18px] text-neutral-900 font-semibold tracking-wider text-center py-1" id="clabe-formatted">
+              000 000 0000000000 00
+            </div>
+            <p class="text-[11px] text-center text-neutral-400 mt-1">Sin comisiones • Acreditación inmediata</p>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="space-y-2.5">
+          <button class="w-full py-3.5 px-6 rounded-2xl bg-neutral-900 hover:bg-black active:scale-[0.98] text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-neutral-950/15 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-900 cursor-pointer" id="copy-btn">
+            <svg class="w-5 h-5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span id="btn-text">Copiar CLABE</span>
+          </button>
+
+          <a class="w-full py-3 px-6 rounded-2xl bg-[#25D366]/10 hover:bg-[#25D366]/20 active:scale-[0.98] text-[#128C7E] hover:text-[#0b665b] border border-[#25D366]/25 font-semibold text-sm flex items-center justify-center gap-2.5 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#25D366] cursor-pointer" href="#" id="whatsapp-btn" rel="noopener noreferrer" target="_blank">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+            </svg>
+            <span>Enviar comprobante por WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
   <script>
-    // Diccionario de negocios y sus enlaces de reseña directa
-    const destinos = {
-      "tintoreria": "https://www.google.com/maps/place/Tintoreria+Hollywood+I/@19.6387489,-99.2179942,21z/",
-      "barberia_norte": "https://search.google.com/local/writereview?placeid=ChIJVzdOg2ke0oUR3hMsN96Y4-c"
+    // Catálogo de prefijos CLABE estándar (México)
+    const BANK_PREFIXES = {
+      "002": "Citibanamex",
+      "012": "BBVA México",
+      "014": "Santander",
+      "021": "HSBC",
+      "072": "Banorte",
+      "127": "Azteca",
+      "136": "Intercam",
+      "638": "Nu México",
+      "684": "Mercado Pago",
+      "670": "Stori",
+      "058": "Banregio",
+      "044": "Scotiabank"
     };
 
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    const BANK_COLORS = {
+      "bbva": "bg-[#004481]",
+      "santander": "bg-[#EC0000]",
+      "nu": "bg-[#820AD1]",
+      "banorte": "bg-[#EB0029]",
+      "citibanamex": "bg-[#002D72]",
+      "banamex": "bg-[#002D72]",
+      "mercado pago": "bg-[#009EE3]",
+      "hsbc": "bg-[#DB0011]",
+      "azteca": "bg-[#007833]"
+    };
 
-    if (id && destinos[id]) {
-      window.location.href = destinos[id];
-    } else {
-      window.onload = function() {
-        document.body.innerHTML = "<h3 style='color:#d93025;'>Negocio no encontrado o ID no especificado.</h3>";
-      };
+    let rawClabeToCopy = "";
+
+    function resolveBankName(bankParam, clabe) {
+      if (bankParam && bankParam.trim()) return bankParam.trim();
+      const code = clabe.replace(/\D/g, '').slice(0, 3);
+      return BANK_PREFIXES[code] || "Banco";
     }
+
+    function formatClabe(clabe) {
+      const clean = clabe.replace(/\D/g, '');
+      if (clean.length === 18) {
+        return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 16)} ${clean.slice(16, 18)}`;
+      }
+      return clabe;
+    }
+
+    function updateBankStyling(bankName) {
+      const initial = bankName.trim().charAt(0).toUpperCase() || "B";
+      document.getElementById("bank-initial").textContent = initial;
+      
+      const lower = bankName.toLowerCase();
+      const iconContainer = document.getElementById("bank-icon-container");
+      
+      let matchedClass = "bg-gradient-to-br from-neutral-900 to-neutral-800";
+      for (const [key, colorClass] of Object.entries(BANK_COLORS)) {
+        if (lower.includes(key)) {
+          matchedClass = colorClass;
+          break;
+        }
+      }
+      iconContainer.className = `w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold text-base shadow-sm ${matchedClass}`;
+    }
+
+    function init() {
+      const p = new URLSearchParams(window.location.search);
+
+      const clabe = (p.get('c') || p.get('clabe') || "012180015487963218").trim();
+      const rawBank = p.get('b') || p.get('banco') || "";
+      const banco = resolveBankName(rawBank, clabe);
+      const nombre = (p.get('n') || p.get('nombre') || "Alejandro Morales Vera").trim();
+      const tel = (p.get('t') || p.get('telefono') || p.get('tel') || p.get('whatsapp') || "5215512345678").trim();
+
+      rawClabeToCopy = clabe.replace(/\s+/g, '');
+
+      document.getElementById("bank-name").textContent = banco;
+      document.getElementById("holder-name").textContent = nombre;
+      document.getElementById("clabe-formatted").textContent = formatClabe(rawClabeToCopy);
+      updateBankStyling(banco);
+
+      // WhatsApp link setup
+      const cleanPhone = tel.replace(/\D/g, '');
+      const msg = `Hola ${nombre}, te comparto el comprobante de transferencia bancaria.`;
+      document.getElementById("whatsapp-btn").href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+    }
+
+    // Copiado al portapapeles
+    const copyBtn = document.getElementById("copy-btn");
+    const toast = document.getElementById("toast");
+    const btnText = document.getElementById("btn-text");
+    let toastTimeout;
+
+    function showToast() {
+      toast.classList.remove("opacity-0", "-translate-y-3", "pointer-events-none");
+      toast.classList.add("opacity-100", "translate-y-0");
+
+      btnText.textContent = "¡Copiada!";
+      copyBtn.classList.replace("bg-neutral-900", "bg-emerald-600");
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("opacity-100", "translate-y-0");
+        toast.classList.add("opacity-0", "-translate-y-3", "pointer-events-none");
+
+        btnText.textContent = "Copiar CLABE";
+        copyBtn.classList.replace("bg-emerald-600", "bg-neutral-900");
+      }, 2000);
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(rawClabeToCopy);
+          showToast();
+          if (navigator.vibrate) navigator.vibrate(40);
+          return;
+        } catch (e) {}
+      }
+      
+      const el = document.createElement("textarea");
+      el.value = rawClabeToCopy;
+      el.style.position = "fixed";
+      el.style.left = "-9999px";
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast();
+    });
+
+    window.addEventListener("DOMContentLoaded", init);
   </script>
-</head>
-<body>
-  <p>Abriendo formulario de reseña...</p>
 </body>
 </html>
