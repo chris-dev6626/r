@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>Transferencia Rápida | Datos Bancarios</title>
+  <title>Datos Bancarios</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -51,7 +51,7 @@
           <path d="M16 10a4 4 0 0 1-8 0"></path>
         </svg>
       </div>
-      <span class="text-xs font-semibold tracking-wider uppercase text-neutral-500">QR3D Pay</span>
+      <span class="text-xs font-semibold tracking-wider uppercase text-neutral-500">3D Pay</span>
     </div>
     <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100/80 text-emerald-600 text-[11px] font-medium">
       <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -218,9 +218,9 @@
         tel = parts[1] || "";
         nombre = parts[2] || "";
       } else {
-        clabe = p.get('c') || p.get('clabe') || "012180015487963218";
-        nombre = p.get('n') || p.get('nombre') || "Alejandro Morales Vera";
-        tel = p.get('t') || p.get('telefono') || p.get('tel') || p.get('whatsapp') || "5215512345678";
+        clabe = p.get('c') || p.get('clabe') || "0";
+        nombre = p.get('n') || p.get('nombre') || "Sin titular";
+        tel = p.get('t') || p.get('telefono') || p.get('tel') || p.get('whatsapp') || "0000000000000";
         banco = p.get('b') || p.get('banco') || "";
       }
 
